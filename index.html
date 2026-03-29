@@ -3,40 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlacePrep — Architecture Diagrams & Flowcharts</title>
+<title>PlacePrep — Architecture Diagrams</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
 
   :root {
-    --bg: #0B1120;
-    --bg2: #111827;
-    --surface: #1A2332;
-    --surface2: #1F2B3D;
-    --border: #2A3A50;
-    --text: #E2E8F0;
-    --text2: #94A3B8;
-    --accent: #3B82F6;
-    --accent2: #60A5FA;
-    --green: #34D399;
-    --orange: #F59E0B;
-    --pink: #F472B6;
-    --purple: #A78BFA;
-    --red: #EF4444;
-    --cyan: #22D3EE;
-    --teal: #14B8A6;
+    --bg: #0B1120; --surface: #1A2332; --surface2: #1F2B3D;
+    --border: #2A3A50; --text: #E2E8F0; --text2: #94A3B8;
+    --accent: #3B82F6; --accent2: #60A5FA; --green: #34D399;
+    --orange: #F59E0B; --pink: #F472B6; --purple: #A78BFA;
+    --red: #EF4444; --cyan: #22D3EE; --teal: #14B8A6;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
+  * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    background: var(--bg);
-    color: var(--text);
+    background: var(--bg); color: var(--text);
     font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
   }
-
   .page-bg {
-    position: fixed; inset: 0; z-index: -1;
+    position:fixed; inset:0; z-index:-1;
     background:
       radial-gradient(ellipse 80% 60% at 20% 10%, rgba(59,130,246,0.08) 0%, transparent 60%),
       radial-gradient(ellipse 60% 50% at 80% 90%, rgba(167,139,250,0.06) 0%, transparent 60%),
@@ -44,1006 +28,613 @@
   }
 
   header {
-    text-align: center;
-    padding: 60px 20px 40px;
-    border-bottom: 1px solid var(--border);
+    text-align:center; padding:28px 16px 18px;
+    border-bottom:1px solid var(--border);
   }
   header .badge {
-    display: inline-block;
-    background: rgba(59,130,246,0.15);
-    color: var(--accent2);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    padding: 6px 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(59,130,246,0.25);
-    margin-bottom: 16px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+    display:inline-block; background:rgba(59,130,246,0.15);
+    color:var(--accent2); font-family:'JetBrains Mono',monospace;
+    font-size:9px; padding:4px 12px; border-radius:14px;
+    border:1px solid rgba(59,130,246,0.25); margin-bottom:8px;
+    letter-spacing:1.5px; text-transform:uppercase;
   }
   header h1 {
-    font-size: clamp(28px, 5vw, 48px);
-    font-weight: 700;
-    background: linear-gradient(135deg, #fff 0%, var(--accent2) 60%, var(--purple) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 10px;
+    font-size:clamp(20px,4vw,32px); font-weight:700;
+    background:linear-gradient(135deg,#fff,var(--accent2),var(--purple));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   }
-  header p { color: var(--text2); font-size: 16px; }
+  header p { color:var(--text2); font-size:12px; margin-top:2px; }
 
   nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(11,17,32,0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    display: flex; gap: 6px;
-    padding: 12px 20px;
-    overflow-x: auto;
-    justify-content: center;
-    flex-wrap: wrap;
+    position:sticky; top:0; z-index:100;
+    background:rgba(11,17,32,0.88); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+    display:flex; gap:4px; padding:8px 12px;
+    overflow-x:auto; justify-content:center; flex-wrap:wrap;
   }
   nav a {
-    color: var(--text2); text-decoration: none;
-    font-size: 13px; font-weight: 500;
-    padding: 8px 16px; border-radius: 8px;
-    white-space: nowrap;
-    transition: all 0.2s;
-    border: 1px solid transparent;
+    color:var(--text2); text-decoration:none; font-size:10px; font-weight:500;
+    padding:5px 10px; border-radius:6px; white-space:nowrap;
+    transition:all 0.2s; border:1px solid transparent;
   }
-  nav a:hover, nav a.active {
-    color: var(--accent2);
-    background: rgba(59,130,246,0.1);
-    border-color: rgba(59,130,246,0.2);
-  }
+  nav a:hover { color:var(--accent2); background:rgba(59,130,246,0.1); border-color:rgba(59,130,246,0.2); }
 
-  .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+  .container { max-width:960px; margin:0 auto; padding:20px 12px; }
 
-  .section {
-    margin-bottom: 60px;
-    animation: fadeUp 0.6s ease both;
-  }
+  .section { margin-bottom:28px; }
   .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
+    font-family:'JetBrains Mono',monospace; font-size:9px;
+    color:var(--accent); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:2px;
   }
-  .section-title {
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 700;
-    margin-bottom: 24px;
-    color: #fff;
-  }
+  .section-title { font-size:clamp(16px,2.5vw,22px); font-weight:700; margin-bottom:10px; color:#fff; }
 
-  /* ========= SVG DIAGRAMS ========= */
+  /* FLOW */
   .diagram-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 32px;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden;
   }
-  .diagram-card .card-header {
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 10px;
+  .card-header {
+    padding:8px 14px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:6px;
   }
-  .card-header .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .card-header .dot.r { background: #EF4444; }
-  .card-header .dot.y { background: #F59E0B; }
-  .card-header .dot.g { background: #22C55E; }
-  .card-header .card-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; color: var(--text2);
-    margin-left: 8px;
+  .dot { width:7px; height:7px; border-radius:50%; }
+  .dot.r { background:#EF4444; } .dot.y { background:#F59E0B; } .dot.g { background:#22C55E; }
+  .card-title { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text2); margin-left:6px; }
+  .diagram-body { padding:14px 10px; overflow-x:auto; display:flex; justify-content:center; }
+
+  .flow { display:flex; flex-direction:column; align-items:center; gap:0; }
+  .fn {
+    padding:7px 16px; border-radius:8px; font-size:10px; font-weight:600;
+    text-align:center; min-width:160px; max-width:240px;
   }
-  .diagram-body {
-    padding: 32px;
-    overflow-x: auto;
-    display: flex;
-    justify-content: center;
-  }
-  .diagram-body svg {
-    max-width: 100%;
-    height: auto;
+  .fn.start { background:linear-gradient(135deg,#3B82F6,#2563EB); color:#fff; border-radius:20px; }
+  .fn.proc { background:var(--surface2); border:1px solid var(--border); color:var(--text); }
+  .fn.dec { background:linear-gradient(135deg,#F59E0B,#D97706); color:#fff; clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); padding:18px 28px; min-width:130px; }
+  .fn.ok { background:linear-gradient(135deg,#059669,#10B981); color:#fff; }
+  .fn.err { background:linear-gradient(135deg,#DC2626,#EF4444); color:#fff; }
+  .fn.ai { background:linear-gradient(135deg,#7C3AED,#A78BFA); color:#fff; }
+  .fn.ext { background:linear-gradient(135deg,#0891B2,#22D3EE); color:#fff; }
+  .fn.db { background:linear-gradient(135deg,#059669,#34D399); color:#fff; border-radius:8px 8px 20px 20px; }
+  .fn small { font-size:8px; opacity:0.8; display:block; margin-top:1px; }
+
+  .ad { width:1.5px; height:18px; background:var(--border); position:relative; }
+  .ad::after {
+    content:''; position:absolute; bottom:-4px; left:50%; transform:translateX(-50%);
+    border-left:4px solid transparent; border-right:4px solid transparent;
+    border-top:5px solid var(--border);
   }
 
-  /* ========= FLOW NODES ========= */
-  .flow-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    padding: 20px;
-    min-width: 300px;
-  }
+  .branch-row { display:flex; gap:24px; align-items:flex-start; justify-content:center; position:relative; }
+  .branch-row::before { content:''; position:absolute; top:0; left:20%; width:60%; height:1.5px; background:var(--border); }
+  .br { display:flex; flex-direction:column; align-items:center; gap:0; }
+  .bl-label { font-family:'JetBrains Mono',monospace; font-size:8px; font-weight:700; margin-bottom:2px; }
+  .bl-label.pass { color:var(--green); }
+  .bl-label.fail { color:var(--red); }
 
-  .flow-node {
-    position: relative;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    min-width: 220px;
-    max-width: 320px;
-    transition: transform 0.2s, box-shadow 0.2s;
+  /* ARCH LAYERS */
+  .layer {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; padding:8px 10px; margin-bottom:4px; position:relative;
   }
-  .flow-node:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  .layer-label {
+    font-family:'JetBrains Mono',monospace; font-size:8px;
+    color:var(--accent); text-transform:uppercase; letter-spacing:1.2px;
+    margin-bottom:5px; font-weight:600;
   }
+  .chips { display:flex; flex-wrap:wrap; gap:4px; }
+  .chip {
+    padding:4px 8px; border-radius:6px; font-size:9px; font-weight:600; border:1px solid;
+  }
+  .chip.bl { background:rgba(59,130,246,0.12); border-color:rgba(59,130,246,0.3); color:var(--accent2); }
+  .chip.pr { background:rgba(167,139,250,0.12); border-color:rgba(167,139,250,0.3); color:var(--purple); }
+  .chip.gr { background:rgba(52,211,153,0.12); border-color:rgba(52,211,153,0.3); color:var(--green); }
+  .chip.or { background:rgba(245,158,11,0.12); border-color:rgba(245,158,11,0.3); color:var(--orange); }
+  .chip.pk { background:rgba(244,114,182,0.12); border-color:rgba(244,114,182,0.3); color:var(--pink); }
+  .chip.cy { background:rgba(34,211,238,0.12); border-color:rgba(34,211,238,0.3); color:var(--cyan); }
+  .chip.tl { background:rgba(20,184,166,0.12); border-color:rgba(20,184,166,0.3); color:var(--teal); }
 
-  .flow-node.start { background: linear-gradient(135deg, #3B82F6, #2563EB); color: #fff; border-radius: 30px; }
-  .flow-node.process { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
-  .flow-node.decision { background: linear-gradient(135deg, #F59E0B, #D97706); color: #fff; transform: rotate(0deg); border-radius: 12px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); padding: 30px 40px; min-width: 180px; }
-  .flow-node.success { background: linear-gradient(135deg, #059669, #10B981); color: #fff; }
-  .flow-node.error { background: linear-gradient(135deg, #DC2626, #EF4444); color: #fff; }
-  .flow-node.ai { background: linear-gradient(135deg, #7C3AED, #A78BFA); color: #fff; }
-  .flow-node.external { background: linear-gradient(135deg, #0891B2, #22D3EE); color: #fff; }
-  .flow-node.db { background: linear-gradient(135deg, #059669, #34D399); color: #fff; border-radius: 12px 12px 30px 30px; }
+  .arrow-sep { text-align:center; color:var(--border); font-size:10px; padding:1px 0; font-family:'JetBrains Mono',monospace; letter-spacing:4px; }
+  .arrow-lbl { text-align:center; font-size:8px; color:var(--text2); font-family:'JetBrains Mono',monospace; margin-bottom:2px; }
 
-  .arrow-down {
-    width: 2px; height: 32px;
-    background: var(--border);
-    position: relative;
+  /* MODULES */
+  .mod-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  @media(max-width:500px) { .mod-grid { grid-template-columns:repeat(2,1fr); } }
+  .mod {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; padding:8px; text-align:center; border-top:2px solid var(--accent);
   }
-  .arrow-down::after {
-    content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
-    border-left: 6px solid transparent; border-right: 6px solid transparent;
-    border-top: 8px solid var(--border);
-  }
-  .arrow-label {
-    font-size: 11px; color: var(--text2);
-    font-family: 'JetBrains Mono', monospace;
-    padding: 2px 0; text-align: center;
-  }
+  .mod:nth-child(2){border-top-color:var(--green)}.mod:nth-child(3){border-top-color:var(--purple)}
+  .mod:nth-child(4){border-top-color:var(--orange)}.mod:nth-child(5){border-top-color:var(--pink)}
+  .mod:nth-child(6){border-top-color:var(--cyan)}.mod:nth-child(7){border-top-color:var(--teal)}
+  .mod:nth-child(8){border-top-color:var(--red)}
+  .mod .ico { font-size:18px; }
+  .mod .mn { font-size:9px; font-weight:700; margin-top:2px; }
+  .mod .md { font-size:7px; color:var(--text2); margin-top:1px; line-height:1.3; }
 
-  .branch-container {
-    display: flex;
-    gap: 40px;
-    align-items: flex-start;
-    justify-content: center;
-    position: relative;
+  /* ER */
+  .er-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  @media(max-width:500px) { .er-grid { grid-template-columns:repeat(2,1fr); } }
+  .erc {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; overflow:hidden; font-size:8px;
   }
-  .branch-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 25%;
-    width: 50%;
-    height: 2px;
-    background: var(--border);
+  .erc .eh {
+    padding:6px 8px; font-weight:700; font-size:10px;
+    border-bottom:1px solid var(--border); display:flex; align-items:center; gap:4px;
   }
-  .branch { display: flex; flex-direction: column; align-items: center; gap: 0; }
-  .branch-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--green);
-    font-weight: 600;
-    margin-bottom: 4px;
+  .erc .ef {
+    padding:2px 8px; display:flex; justify-content:space-between;
+    border-bottom:1px solid rgba(42,58,80,0.3);
+    font-family:'JetBrains Mono',monospace; font-size:8px;
   }
-  .branch-label.fail { color: var(--red); }
+  .erc .ef:last-child { border-bottom:none; }
+  .bpk { background:rgba(245,158,11,0.2); color:var(--orange); padding:1px 4px; border-radius:2px; font-size:7px; font-weight:600; }
+  .bfk { background:rgba(167,139,250,0.2); color:var(--purple); padding:1px 4px; border-radius:2px; font-size:7px; font-weight:600; }
 
-  /* ========= ARCH DIAGRAM ========= */
-  .arch-grid {
-    display: grid;
-    gap: 16px;
-    grid-template-columns: 1fr;
+  .rels {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; padding:8px 10px; margin-top:6px;
   }
-
-  .arch-layer {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 24px;
-    position: relative;
-  }
-  .arch-layer::before {
-    content: attr(data-layer);
-    position: absolute;
-    top: -10px; left: 20px;
-    background: var(--bg);
-    padding: 2px 12px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-  }
-
-  .arch-boxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 8px;
-  }
-  .arch-box {
-    padding: 10px 16px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    border: 1px solid;
-    flex: 1;
-    min-width: 120px;
-    text-align: center;
-    transition: transform 0.2s;
-  }
-  .arch-box:hover { transform: scale(1.04); }
-
-  .arch-box.blue { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.3); color: var(--accent2); }
-  .arch-box.purple { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.3); color: var(--purple); }
-  .arch-box.green { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.3); color: var(--green); }
-  .arch-box.orange { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: var(--orange); }
-  .arch-box.pink { background: rgba(244,114,182,0.12); border-color: rgba(244,114,182,0.3); color: var(--pink); }
-  .arch-box.cyan { background: rgba(34,211,238,0.12); border-color: rgba(34,211,238,0.3); color: var(--cyan); }
-  .arch-box.teal { background: rgba(20,184,166,0.12); border-color: rgba(20,184,166,0.3); color: var(--teal); }
-  .arch-box.red { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); color: var(--red); }
-
-  .layer-arrow {
-    display: flex;
-    justify-content: center;
-    padding: 4px 0;
-    color: var(--border);
-    font-size: 22px;
-    letter-spacing: 8px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  /* ========= ER DIAGRAM ========= */
-  .er-grid {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
-  .er-entity {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .er-entity:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-  }
-  .er-entity .entity-header {
-    padding: 14px 18px;
-    font-weight: 700;
-    font-size: 15px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .er-entity .entity-header .icon { font-size: 18px; }
-  .er-entity .field {
-    padding: 8px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    border-bottom: 1px solid rgba(42,58,80,0.4);
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .er-entity .field:last-child { border-bottom: none; }
-  .er-entity .field .fname { color: var(--text); font-weight: 500; }
-  .er-entity .field .ftype { color: var(--text2); }
-  .er-entity .field .fkey {
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: 600;
-  }
-  .fkey.pk { background: rgba(245,158,11,0.2); color: var(--orange); }
-  .fkey.fk { background: rgba(167,139,250,0.2); color: var(--purple); }
-  .fkey.idx { background: rgba(34,211,238,0.2); color: var(--cyan); }
-
-  /* ========= MODULE DIAGRAM ========= */
-  .module-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-  }
-  .module-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    text-align: center;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .module-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-  }
-  .module-card:nth-child(1)::before { background: var(--accent); }
-  .module-card:nth-child(2)::before { background: var(--green); }
-  .module-card:nth-child(3)::before { background: var(--purple); }
-  .module-card:nth-child(4)::before { background: var(--orange); }
-  .module-card:nth-child(5)::before { background: var(--pink); }
-  .module-card:nth-child(6)::before { background: var(--cyan); }
-  .module-card:nth-child(7)::before { background: var(--teal); }
-  .module-card:nth-child(8)::before { background: var(--red); }
-
-  .module-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    border-color: rgba(59,130,246,0.3);
-  }
-  .module-icon { font-size: 32px; margin-bottom: 10px; }
-  .module-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
-  .module-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
-
-  /* ========= RELATION LINES ========= */
-  .relations {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 24px;
-    margin-top: 24px;
-  }
-  .relations h4 {
-    font-size: 14px;
-    color: var(--accent2);
-    margin-bottom: 12px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .rel-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-    font-size: 13px;
-    border-bottom: 1px solid rgba(42,58,80,0.3);
-  }
-  .rel-row:last-child { border-bottom: none; }
-  .rel-entity {
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .rel-line {
-    flex: 1;
-    height: 2px;
-    background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 6px, transparent 6px, transparent 12px);
-    position: relative;
-  }
-  .rel-label {
-    color: var(--text2);
-    font-size: 11px;
-    font-family: 'JetBrains Mono', monospace;
-    white-space: nowrap;
-  }
-
-  /* ========= RESPONSIVE ========= */
-  @media (max-width: 768px) {
-    .branch-container { flex-direction: column; gap: 16px; }
-    .branch-container::before { display: none; }
-    nav { justify-content: flex-start; }
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .section:nth-child(2) { animation-delay: 0.1s; }
-  .section:nth-child(3) { animation-delay: 0.2s; }
-  .section:nth-child(4) { animation-delay: 0.3s; }
-  .section:nth-child(5) { animation-delay: 0.4s; }
-  .section:nth-child(6) { animation-delay: 0.5s; }
+  .rels h4 { font-size:9px; color:var(--accent2); margin-bottom:4px; font-family:'JetBrains Mono',monospace; }
+  .rel { display:flex; align-items:center; gap:4px; padding:2px 0; font-size:8px; border-bottom:1px solid rgba(42,58,80,0.3); }
+  .rel:last-child { border-bottom:none; }
+  .re { font-weight:600; padding:1px 6px; border-radius:3px; font-size:8px; font-family:'JetBrains Mono',monospace; }
+  .rline { flex:1; height:1px; background:var(--border); }
+  .rl { color:var(--text2); font-family:'JetBrains Mono',monospace; font-size:8px; }
 
   footer {
-    text-align: center;
-    padding: 40px 20px;
-    border-top: 1px solid var(--border);
-    color: var(--text2);
-    font-size: 13px;
+    text-align:center; padding:20px; border-top:1px solid var(--border);
+    color:var(--text2); font-size:10px;
   }
 </style>
 </head>
 <body>
-
 <div class="page-bg"></div>
 
 <header>
   <div class="badge">Technical Architecture</div>
   <h1>PlacePrep — System Diagrams</h1>
-  <p>Flowcharts, Architecture Diagrams & Entity Relationships</p>
+  <p>Flowcharts, Architecture & ER Diagrams</p>
 </header>
 
 <nav>
-  <a href="#arch">System Architecture</a>
-  <a href="#modules">Module Diagram</a>
-  <a href="#auth-flow">Auth Flow</a>
-  <a href="#code-flow">Code Execution Flow</a>
-  <a href="#interview-flow">AI Interview Flow</a>
+  <a href="#arch">Architecture</a>
+  <a href="#modules">Modules</a>
+  <a href="#auth">Auth Flow</a>
+  <a href="#code">Code Execution</a>
+  <a href="#interview">AI Interview</a>
   <a href="#er">ER Diagram</a>
-  <a href="#api-flow">API Request Flow</a>
+  <a href="#api">API Lifecycle</a>
   <a href="#deploy">Deployment</a>
 </nav>
 
 <div class="container">
 
-  <!-- ===== 1. SYSTEM ARCHITECTURE ===== -->
-  <section class="section" id="arch">
-    <div class="section-label">Diagram 01</div>
-    <div class="section-title">System Architecture (3-Tier)</div>
-
-    <div class="arch-grid">
-      <div class="arch-layer" data-layer="Client Layer — Browser">
-        <div class="arch-boxes">
-          <div class="arch-box blue">React 18 SPA</div>
-          <div class="arch-box blue">Tailwind CSS</div>
-          <div class="arch-box blue">Monaco Editor</div>
-          <div class="arch-box blue">React Router v6</div>
-          <div class="arch-box blue">Axios Client</div>
-          <div class="arch-box blue">Context API</div>
-        </div>
-      </div>
-
-      <div class="layer-arrow">▼ ▼ ▼</div>
-      <div style="text-align:center;font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace;margin:-8px 0 4px;">HTTPS / REST API / JSON</div>
-
-      <div class="arch-layer" data-layer="Server Layer — Node.js Runtime">
-        <div class="arch-boxes">
-          <div class="arch-box purple">Express.js Router</div>
-          <div class="arch-box purple">JWT Auth Middleware</div>
-          <div class="arch-box purple">Rate Limiter</div>
-          <div class="arch-box purple">CORS Handler</div>
-        </div>
-        <div style="margin-top:12px;"></div>
-        <div class="arch-boxes">
-          <div class="arch-box green">Auth Controller</div>
-          <div class="arch-box green">Problem Controller</div>
-          <div class="arch-box green">Interview Controller</div>
-          <div class="arch-box green">Aptitude Controller</div>
-          <div class="arch-box green">Resume Controller</div>
-        </div>
-        <div style="margin-top:12px;"></div>
-        <div class="arch-boxes">
-          <div class="arch-box orange">Mongoose ODM</div>
-          <div class="arch-box orange">Validation Layer</div>
-          <div class="arch-box orange">Error Handler</div>
-        </div>
-      </div>
-
-      <div class="layer-arrow">▼ ▼ ▼</div>
-      <div style="text-align:center;font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace;margin:-8px 0 4px;">MongoDB Wire Protocol / TCP</div>
-
-      <div class="arch-layer" data-layer="Data Layer — Cloud Services">
-        <div class="arch-boxes">
-          <div class="arch-box teal">MongoDB Atlas</div>
-          <div class="arch-box cyan">Judge0 CE API</div>
-          <div class="arch-box pink">Gemini AI API</div>
-          <div class="arch-box orange">Cloudinary CDN</div>
-        </div>
-      </div>
+<!-- 1. SYSTEM ARCHITECTURE -->
+<section class="section" id="arch">
+  <div class="section-label">Diagram 01</div>
+  <div class="section-title">System Architecture (3-Tier)</div>
+  <div class="layer">
+    <div class="layer-label">Client — Browser</div>
+    <div class="chips">
+      <div class="chip bl">React 18</div><div class="chip bl">Tailwind</div><div class="chip bl">Monaco Editor</div><div class="chip bl">Router v6</div><div class="chip bl">Axios</div><div class="chip bl">Context API</div>
     </div>
-  </section>
-
-  <!-- ===== 2. MODULE DECOMPOSITION ===== -->
-  <section class="section" id="modules">
-    <div class="section-label">Diagram 02</div>
-    <div class="section-title">Module Decomposition Diagram</div>
-
-    <div class="module-grid">
-      <div class="module-card">
-        <div class="module-icon">🔐</div>
-        <div class="module-name">Auth Module</div>
-        <div class="module-desc">JWT Login/Register, OAuth, Role-Based Access Control, Token Refresh</div>
-      </div>
-      <div class="module-card">
-        <div class="module-icon">💻</div>
-        <div class="module-name">DSA Compiler</div>
-        <div class="module-desc">Monaco Editor, Judge0 Execution, Multi-language, Test Cases, Submissions</div>
-      </div>
-      <div class="module-card">
-        <div class="module-icon">🤖</div>
-        <div class="module-name">AI Interview</div>
-        <div class="module-desc">Gemini-powered Q&A, Real-time Scoring, Feedback, Session History</div>
-      </div>
-      <div class="module-card">
-        <div class="module-icon">📝</div>
-        <div class="module-name">Aptitude Module</div>
-        <div class="module-desc">Quant, Verbal, Logical MCQs, Timed Tests, Topic Analytics</div>
-      </div>
-      <div class="module-card">
-        <div class="module-icon">📄</div>
-        <div class="module-name">Resume Builder</div>
-        <div class="module-desc">Templates, ATS Score, AI Suggestions, PDF Generation</div>
-      </div>
-      <div class="module-card">
-        <div class="module-icon">📊</div>
-        <div class="module-name">Progress Tracker</div>
-        <div class="module-desc">Heatmap, Streaks, Leaderboard, Spaced Repetition, Analytics</div>
-      </div>
-      <div class="module-card">
-        <div class="module-icon">🏢</div>
-        <div class="module-name">Company Prep</div>
-        <div class="module-desc">Company Profiles, Interview Experiences, Prep Guides, PYQs</div>
-      </div>
-      <div class="module-card">
-        <div class="module-icon">⚙️</div>
-        <div class="module-name">Admin Panel</div>
-        <div class="module-desc">User CRUD, Content CMS, Analytics Dashboard, Role Management</div>
-      </div>
+  </div>
+  <div class="arrow-sep">▼▼▼</div>
+  <div class="arrow-lbl">HTTPS / REST / JSON</div>
+  <div class="layer">
+    <div class="layer-label">Server — Node.js / Express</div>
+    <div class="chips">
+      <div class="chip pr">Router</div><div class="chip pr">JWT Auth</div><div class="chip pr">Rate Limit</div><div class="chip pr">CORS</div>
     </div>
-  </section>
-
-  <!-- ===== 3. AUTH FLOW ===== -->
-  <section class="section" id="auth-flow">
-    <div class="section-label">Flowchart 01</div>
-    <div class="section-title">Authentication Flow</div>
-
-    <div class="diagram-card">
-      <div class="card-header">
-        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-        <span class="card-title">auth_flow.diagram</span>
-      </div>
-      <div class="diagram-body">
-        <div class="flow-container">
-          <div class="flow-node start">🚀 User Opens Login Page</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Enter Email & Password</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">POST /api/auth/login<br><small style="color:var(--text2);">Axios → Express Router</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Find User in MongoDB by Email</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node decision">User<br>Exists?</div>
-          <div class="arrow-down"></div>
-
-          <div class="branch-container">
-            <div class="branch">
-              <div class="branch-label fail">✗ NO</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node error">401: Invalid Credentials</div>
-            </div>
-            <div class="branch">
-              <div class="branch-label">✓ YES</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node process">bcrypt.compare(password, hash)</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node decision">Password<br>Match?</div>
-              <div class="arrow-down"></div>
-              <div class="branch-container">
-                <div class="branch">
-                  <div class="branch-label fail">✗ NO</div>
-                  <div class="arrow-down"></div>
-                  <div class="flow-node error">401: Wrong Password</div>
-                </div>
-                <div class="branch">
-                  <div class="branch-label">✓ YES</div>
-                  <div class="arrow-down"></div>
-                  <div class="flow-node ai">Generate JWT Access Token (15m)</div>
-                  <div class="arrow-down"></div>
-                  <div class="flow-node ai">Generate Refresh Token (7d)<br><small>Set as httpOnly Cookie</small></div>
-                  <div class="arrow-down"></div>
-                  <div class="flow-node db">Save Refresh Token to MongoDB</div>
-                  <div class="arrow-down"></div>
-                  <div class="flow-node success">✅ 200: Login Success<br><small>Return { token, user }</small></div>
-                  <div class="arrow-down"></div>
-                  <div class="flow-node start">Redirect to Dashboard</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div style="height:4px"></div>
+    <div class="chips">
+      <div class="chip gr">Auth Ctrl</div><div class="chip gr">Problem Ctrl</div><div class="chip gr">Interview Ctrl</div><div class="chip gr">Aptitude Ctrl</div><div class="chip gr">Resume Ctrl</div>
     </div>
-  </section>
-
-  <!-- ===== 4. CODE EXECUTION FLOW ===== -->
-  <section class="section" id="code-flow">
-    <div class="section-label">Flowchart 02</div>
-    <div class="section-title">Code Submission & Execution Flow</div>
-
-    <div class="diagram-card">
-      <div class="card-header">
-        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-        <span class="card-title">code_execution_flow.diagram</span>
-      </div>
-      <div class="diagram-body">
-        <div class="flow-container">
-          <div class="flow-node start">👨‍💻 User Writes Code in Monaco Editor</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Select Language (C++/Java/Python/JS)</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Click "Submit" Button</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">POST /api/problems/:id/submit<br><small style="color:var(--text2);">{ code, languageId }</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node ai">Auth Middleware — Verify JWT</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node db">Fetch Test Cases from MongoDB</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node external">🔄 Send to Judge0 CE API<br><small>{ source_code, stdin, expected_output, language_id }</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Judge0 Executes in Docker Sandbox<br><small style="color:var(--text2);">CPU: 2s limit | Memory: 256MB limit</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Poll Judge0 for Results<br><small style="color:var(--text2);">Interval: 1s | Max wait: 10s</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node decision">All Tests<br>Pass?</div>
-          <div class="arrow-down"></div>
-
-          <div class="branch-container">
-            <div class="branch">
-              <div class="branch-label fail">✗ FAIL</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node error">Status: WA / TLE / RE / CE</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node db">Save Submission (Failed)</div>
-            </div>
-            <div class="branch">
-              <div class="branch-label">✓ PASS</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node success">✅ Status: Accepted</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node db">Save Submission + Update Progress</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node process">Update Streak & Leaderboard</div>
-            </div>
-          </div>
-
-          <div style="margin-top:32px;"></div>
-          <div class="flow-node start">Return Results to Frontend<br><small>{ status, runtime, memory, testCasesPassed }</small></div>
-        </div>
-      </div>
+    <div style="height:4px"></div>
+    <div class="chips">
+      <div class="chip or">Mongoose ODM</div><div class="chip or">Validation</div><div class="chip or">Error Handler</div>
     </div>
-  </section>
-
-  <!-- ===== 5. AI INTERVIEW FLOW ===== -->
-  <section class="section" id="interview-flow">
-    <div class="section-label">Flowchart 03</div>
-    <div class="section-title">AI Mock Interview Flow</div>
-
-    <div class="diagram-card">
-      <div class="card-header">
-        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-        <span class="card-title">ai_interview_flow.diagram</span>
-      </div>
-      <div class="diagram-body">
-        <div class="flow-container">
-          <div class="flow-node start">🎤 User Starts Mock Interview</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Select Type: Technical / HR / Behavioral</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Select Difficulty: Easy / Medium / Hard</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">POST /api/interview/start<br><small style="color:var(--text2);">{ type, difficulty }</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node db">Create InterviewSession in MongoDB</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node ai">🧠 Gemini API: Generate Question<br><small>Structured prompt with context & rubric</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node success">Display Question to User</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">User Types / Speaks Answer</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">POST /api/interview/:sessionId/answer<br><small style="color:var(--text2);">{ answer }</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node ai">🧠 Gemini API: Evaluate Answer<br><small>Score on 5 dimensions (0-100 total)</small></div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node process">Return Feedback + Score to User</div>
-          <div class="arrow-down"></div>
-
-          <div class="flow-node decision">More<br>Questions?</div>
-          <div class="arrow-down"></div>
-
-          <div class="branch-container">
-            <div class="branch">
-              <div class="branch-label">↩ YES — Loop Back</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node ai">Generate Next Question</div>
-            </div>
-            <div class="branch">
-              <div class="branch-label fail">✗ NO — Session End</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node ai">🧠 Generate Overall Summary</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node db">Save Complete Session to DB</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node success">✅ Show Final Score Card<br><small>Score + Strengths + Improvements</small></div>
-            </div>
-          </div>
-        </div>
-      </div>
+  </div>
+  <div class="arrow-sep">▼▼▼</div>
+  <div class="arrow-lbl">MongoDB Wire Protocol</div>
+  <div class="layer">
+    <div class="layer-label">Data & External Services</div>
+    <div class="chips">
+      <div class="chip tl">MongoDB Atlas</div><div class="chip cy">Judge0 CE</div><div class="chip pk">Gemini AI</div><div class="chip or">Cloudinary</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ===== 6. ER DIAGRAM ===== -->
-  <section class="section" id="er">
-    <div class="section-label">Diagram 03</div>
-    <div class="section-title">Entity Relationship Diagram</div>
+<!-- 2. MODULES -->
+<section class="section" id="modules">
+  <div class="section-label">Diagram 02</div>
+  <div class="section-title">Module Decomposition</div>
+  <div class="mod-grid">
+    <div class="mod"><div class="ico">🔐</div><div class="mn">Auth</div><div class="md">JWT, OAuth, RBAC</div></div>
+    <div class="mod"><div class="ico">💻</div><div class="mn">DSA Compiler</div><div class="md">Monaco, Judge0, Tests</div></div>
+    <div class="mod"><div class="ico">🤖</div><div class="mn">AI Interview</div><div class="md">Gemini, Scoring</div></div>
+    <div class="mod"><div class="ico">📝</div><div class="mn">Aptitude</div><div class="md">Quant, Verbal, Logic</div></div>
+    <div class="mod"><div class="ico">📄</div><div class="mn">Resume</div><div class="md">Templates, ATS Score</div></div>
+    <div class="mod"><div class="ico">📊</div><div class="mn">Progress</div><div class="md">Heatmap, Streaks</div></div>
+    <div class="mod"><div class="ico">🏢</div><div class="mn">Company Prep</div><div class="md">Experiences, Guides</div></div>
+    <div class="mod"><div class="ico">⚙️</div><div class="mn">Admin</div><div class="md">CRUD, CMS, Analytics</div></div>
+  </div>
+</section>
 
-    <div class="er-grid">
-      <!-- Users -->
-      <div class="er-entity" style="border-top: 3px solid var(--accent);">
-        <div class="entity-header" style="color:var(--accent2);"><span class="icon">👤</span> Users</div>
-        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
-        <div class="field"><span class="fname">name</span><span class="ftype">String</span></div>
-        <div class="field"><span class="fname">email</span><span class="fkey idx">UNIQUE</span></div>
-        <div class="field"><span class="fname">password</span><span class="ftype">String (hashed)</span></div>
-        <div class="field"><span class="fname">role</span><span class="ftype">Enum</span></div>
-        <div class="field"><span class="fname">college</span><span class="ftype">String</span></div>
-        <div class="field"><span class="fname">dsaProgress</span><span class="ftype">Object</span></div>
-        <div class="field"><span class="fname">aptitudeProgress</span><span class="ftype">Object</span></div>
-        <div class="field"><span class="fname">refreshToken</span><span class="ftype">String</span></div>
-      </div>
+<!-- 3. AUTH FLOW -->
+<section class="section" id="auth">
+  <div class="section-label">Flowchart 01</div>
+  <div class="section-title">Authentication Flow</div>
+  <div class="diagram-card">
+    <div class="card-header"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="card-title">auth_flow.diagram</span></div>
+    <div class="diagram-body">
+      <svg viewBox="0 0 600 460" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif">
+        <line x1="300" y1="28" x2="300" y2="40" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="62" x2="300" y2="74" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="96" x2="300" y2="108" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="130" x2="300" y2="145" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="185" x2="140" y2="205" stroke="#EF4444" stroke-width="1" stroke-dasharray="3"/>
+        <line x1="300" y1="185" x2="440" y2="205" stroke="#34D399" stroke-width="1.2"/>
+        <line x1="440" y1="227" x2="440" y2="240" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="440" y1="280" x2="320" y2="300" stroke="#EF4444" stroke-width="1" stroke-dasharray="3"/>
+        <line x1="440" y1="280" x2="530" y2="300" stroke="#34D399" stroke-width="1.2"/>
+        <line x1="530" y1="322" x2="530" y2="335" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="530" y1="357" x2="530" y2="370" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="530" y1="392" x2="530" y2="405" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="530" y1="427" x2="530" y2="437" stroke="#2A3A50" stroke-width="1.5"/>
 
-      <!-- Problems -->
-      <div class="er-entity" style="border-top: 3px solid var(--green);">
-        <div class="entity-header" style="color:var(--green);"><span class="icon">💡</span> Problems</div>
-        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
-        <div class="field"><span class="fname">title</span><span class="ftype">String</span></div>
-        <div class="field"><span class="fname">slug</span><span class="fkey idx">UNIQUE</span></div>
-        <div class="field"><span class="fname">difficulty</span><span class="ftype">Enum</span></div>
-        <div class="field"><span class="fname">category</span><span class="ftype">String</span></div>
-        <div class="field"><span class="fname">testCases</span><span class="ftype">[Object]</span></div>
-        <div class="field"><span class="fname">starterCode</span><span class="ftype">Object</span></div>
-        <div class="field"><span class="fname">companies</span><span class="ftype">[String]</span></div>
-      </div>
+        <rect x="200" y="8" width="200" height="20" rx="10" fill="#3B82F6"/>
+        <text x="300" y="22" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">🚀 User Opens Login Page</text>
 
-      <!-- Submissions -->
-      <div class="er-entity" style="border-top: 3px solid var(--purple);">
-        <div class="entity-header" style="color:var(--purple);"><span class="icon">📤</span> Submissions</div>
-        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
-        <div class="field"><span class="fname">userId</span><span class="fkey fk">FK → Users</span></div>
-        <div class="field"><span class="fname">problemId</span><span class="fkey fk">FK → Problems</span></div>
-        <div class="field"><span class="fname">code</span><span class="ftype">String</span></div>
-        <div class="field"><span class="fname">language</span><span class="ftype">String</span></div>
-        <div class="field"><span class="fname">status</span><span class="ftype">Enum</span></div>
-        <div class="field"><span class="fname">runtime</span><span class="ftype">Number (ms)</span></div>
-        <div class="field"><span class="fname">memory</span><span class="ftype">Number (KB)</span></div>
-      </div>
+        <rect x="210" y="40" width="180" height="22" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="55" text-anchor="middle" fill="#E2E8F0" font-size="9">Enter Email & Password</text>
 
-      <!-- InterviewSessions -->
-      <div class="er-entity" style="border-top: 3px solid var(--pink);">
-        <div class="entity-header" style="color:var(--pink);"><span class="icon">🎙️</span> InterviewSessions</div>
-        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
-        <div class="field"><span class="fname">userId</span><span class="fkey fk">FK → Users</span></div>
-        <div class="field"><span class="fname">type</span><span class="ftype">Enum</span></div>
-        <div class="field"><span class="fname">difficulty</span><span class="ftype">Enum</span></div>
-        <div class="field"><span class="fname">questions</span><span class="ftype">[Object]</span></div>
-        <div class="field"><span class="fname">overallScore</span><span class="ftype">Number</span></div>
-        <div class="field"><span class="fname">aiSummary</span><span class="ftype">String</span></div>
-      </div>
+        <rect x="200" y="74" width="200" height="22" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="87" text-anchor="middle" fill="#E2E8F0" font-size="9" font-weight="600">POST /api/auth/login</text>
 
-      <!-- AptitudeTests -->
-      <div class="er-entity" style="border-top: 3px solid var(--orange);">
-        <div class="entity-header" style="color:var(--orange);"><span class="icon">🧮</span> AptitudeTests</div>
-        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
-        <div class="field"><span class="fname">title</span><span class="ftype">String</span></div>
-        <div class="field"><span class="fname">category</span><span class="ftype">Enum</span></div>
-        <div class="field"><span class="fname">questions</span><span class="ftype">[Object]</span></div>
-        <div class="field"><span class="fname">duration</span><span class="ftype">Number (min)</span></div>
-        <div class="field"><span class="fname">totalMarks</span><span class="ftype">Number</span></div>
-      </div>
+        <rect x="195" y="108" width="210" height="22" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="123" text-anchor="middle" fill="#E2E8F0" font-size="9">Find User in MongoDB by Email</text>
 
-      <!-- AptitudeResults -->
-      <div class="er-entity" style="border-top: 3px solid var(--cyan);">
-        <div class="entity-header" style="color:var(--cyan);"><span class="icon">📊</span> AptitudeResults</div>
-        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
-        <div class="field"><span class="fname">userId</span><span class="fkey fk">FK → Users</span></div>
-        <div class="field"><span class="fname">testId</span><span class="fkey fk">FK → AptitudeTests</span></div>
-        <div class="field"><span class="fname">score</span><span class="ftype">Number</span></div>
-        <div class="field"><span class="fname">answers</span><span class="ftype">[Object]</span></div>
-        <div class="field"><span class="fname">timeTaken</span><span class="ftype">Number (sec)</span></div>
-      </div>
+        <polygon points="300,145 360,167 300,189 240,167" fill="#F59E0B"/>
+        <text x="300" y="170" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">User Exists?</text>
+
+        <text x="200" y="202" text-anchor="middle" fill="#EF4444" font-size="7" font-weight="700">✗ NO</text>
+        <rect x="60" y="205" width="160" height="20" rx="6" fill="#DC2626"/>
+        <text x="140" y="219" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">401: Invalid Credentials</text>
+
+        <text x="390" y="202" text-anchor="middle" fill="#34D399" font-size="7" font-weight="700">✓ YES</text>
+        <rect x="345" y="205" width="190" height="22" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="440" y="220" text-anchor="middle" fill="#E2E8F0" font-size="9">bcrypt.compare(password, hash)</text>
+
+        <polygon points="440,240 495,262 440,284 385,262" fill="#F59E0B"/>
+        <text x="440" y="258" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">Password</text>
+        <text x="440" y="268" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">Match?</text>
+
+        <text x="345" y="298" text-anchor="middle" fill="#EF4444" font-size="7" font-weight="700">✗ NO</text>
+        <rect x="245" y="300" width="140" height="20" rx="6" fill="#DC2626"/>
+        <text x="315" y="314" text-anchor="middle" fill="#fff" font-size="9">401: Wrong Password</text>
+
+        <text x="505" y="298" text-anchor="middle" fill="#34D399" font-size="7" font-weight="700">✓ YES</text>
+        <rect x="455" y="300" width="150" height="22" rx="6" fill="#7C3AED"/>
+        <text x="530" y="315" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Generate JWT (15m)</text>
+
+        <rect x="450" y="335" width="160" height="22" rx="6" fill="#7C3AED"/>
+        <text x="530" y="350" text-anchor="middle" fill="#fff" font-size="9">Refresh Token → Cookie</text>
+
+        <rect x="455" y="370" width="150" height="22" rx="10" fill="#059669"/>
+        <text x="530" y="385" text-anchor="middle" fill="#fff" font-size="9">Save to MongoDB</text>
+
+        <rect x="445" y="405" width="170" height="22" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="530" y="420" text-anchor="middle" fill="#E2E8F0" font-size="9">Return { token, user }</text>
+
+        <rect x="450" y="437" width="160" height="20" rx="10" fill="#3B82F6"/>
+        <text x="530" y="451" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">✅ Redirect Dashboard</text>
+      </svg>
     </div>
+  </div>
+</section>
 
-    <!-- Relationships -->
-    <div class="relations">
-      <h4>// Relationships</h4>
-      <div class="rel-row">
-        <span class="rel-entity" style="background:rgba(59,130,246,0.15);color:var(--accent2);">Users</span>
-        <span class="rel-label">1</span>
-        <div class="rel-line"></div>
-        <span class="rel-label">N</span>
-        <span class="rel-entity" style="background:rgba(167,139,250,0.15);color:var(--purple);">Submissions</span>
-        <span class="rel-label" style="margin-left:8px;">A user has many submissions</span>
-      </div>
-      <div class="rel-row">
-        <span class="rel-entity" style="background:rgba(52,211,153,0.15);color:var(--green);">Problems</span>
-        <span class="rel-label">1</span>
-        <div class="rel-line"></div>
-        <span class="rel-label">N</span>
-        <span class="rel-entity" style="background:rgba(167,139,250,0.15);color:var(--purple);">Submissions</span>
-        <span class="rel-label" style="margin-left:8px;">A problem has many submissions</span>
-      </div>
-      <div class="rel-row">
-        <span class="rel-entity" style="background:rgba(59,130,246,0.15);color:var(--accent2);">Users</span>
-        <span class="rel-label">1</span>
-        <div class="rel-line"></div>
-        <span class="rel-label">N</span>
-        <span class="rel-entity" style="background:rgba(244,114,182,0.15);color:var(--pink);">InterviewSessions</span>
-        <span class="rel-label" style="margin-left:8px;">A user has many interview sessions</span>
-      </div>
-      <div class="rel-row">
-        <span class="rel-entity" style="background:rgba(59,130,246,0.15);color:var(--accent2);">Users</span>
-        <span class="rel-label">1</span>
-        <div class="rel-line"></div>
-        <span class="rel-label">N</span>
-        <span class="rel-entity" style="background:rgba(34,211,238,0.15);color:var(--cyan);">AptitudeResults</span>
-        <span class="rel-label" style="margin-left:8px;">A user has many test results</span>
-      </div>
-      <div class="rel-row">
-        <span class="rel-entity" style="background:rgba(245,158,11,0.15);color:var(--orange);">AptitudeTests</span>
-        <span class="rel-label">1</span>
-        <div class="rel-line"></div>
-        <span class="rel-label">N</span>
-        <span class="rel-entity" style="background:rgba(34,211,238,0.15);color:var(--cyan);">AptitudeResults</span>
-        <span class="rel-label" style="margin-left:8px;">A test has many results</span>
-      </div>
+<!-- 4. CODE EXECUTION -->
+<section class="section" id="code">
+  <div class="section-label">Flowchart 02</div>
+  <div class="section-title">Code Submission & Execution</div>
+  <div class="diagram-card">
+    <div class="card-header"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="card-title">code_exec.diagram</span></div>
+    <div class="diagram-body">
+      <svg viewBox="0 0 600 480" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif">
+        <line x1="300" y1="28" x2="300" y2="38" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="58" x2="300" y2="68" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="88" x2="300" y2="98" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="118" x2="300" y2="128" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="150" x2="300" y2="160" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="182" x2="300" y2="192" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="218" x2="300" y2="228" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="254" x2="300" y2="268" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="308" x2="155" y2="330" stroke="#EF4444" stroke-width="1" stroke-dasharray="3"/>
+        <line x1="300" y1="308" x2="450" y2="330" stroke="#34D399" stroke-width="1.2"/>
+        <line x1="155" y1="352" x2="155" y2="362" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="450" y1="352" x2="450" y2="362" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="450" y1="382" x2="450" y2="392" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="155" y1="382" x2="300" y2="420" stroke="#2A3A50" stroke-width="1"/>
+        <line x1="450" y1="412" x2="300" y2="420" stroke="#2A3A50" stroke-width="1"/>
+
+        <rect x="185" y="8" width="230" height="20" rx="10" fill="#3B82F6"/>
+        <text x="300" y="22" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">👨‍💻 Write Code in Monaco Editor</text>
+
+        <rect x="205" y="38" width="190" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="52" text-anchor="middle" fill="#E2E8F0" font-size="9">Select Language (C++/Java/Py/JS)</text>
+
+        <rect x="225" y="68" width="150" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="82" text-anchor="middle" fill="#E2E8F0" font-size="9">Click "Submit"</text>
+
+        <rect x="195" y="98" width="210" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="112" text-anchor="middle" fill="#E2E8F0" font-size="9" font-weight="600">POST /api/problems/:id/submit</text>
+
+        <rect x="215" y="128" width="170" height="22" rx="6" fill="#7C3AED"/>
+        <text x="300" y="143" text-anchor="middle" fill="#fff" font-size="9">JWT Auth Middleware</text>
+
+        <rect x="200" y="160" width="200" height="22" rx="8" fill="#059669"/>
+        <text x="300" y="175" text-anchor="middle" fill="#fff" font-size="9">Fetch Test Cases from DB</text>
+
+        <rect x="185" y="192" width="230" height="26" rx="8" fill="#0891B2"/>
+        <text x="300" y="206" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">🔄 Send to Judge0 CE API</text>
+        <text x="300" y="215" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7">{source_code, stdin, expected_output}</text>
+
+        <rect x="195" y="228" width="210" height="26" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="241" text-anchor="middle" fill="#E2E8F0" font-size="9">Docker Sandbox Execution</text>
+        <text x="300" y="251" text-anchor="middle" fill="#94A3B8" font-size="7">CPU: 2s | Mem: 256MB</text>
+
+        <polygon points="300,268 360,290 300,312 240,290" fill="#F59E0B"/>
+        <text x="300" y="290" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">All Tests</text>
+        <text x="300" y="300" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">Pass?</text>
+
+        <text x="195" y="328" text-anchor="middle" fill="#EF4444" font-size="7" font-weight="700">✗ FAIL</text>
+        <rect x="75" y="330" width="160" height="22" rx="6" fill="#DC2626"/>
+        <text x="155" y="345" text-anchor="middle" fill="#fff" font-size="9">WA / TLE / RE / CE</text>
+        <rect x="75" y="362" width="160" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="155" y="376" text-anchor="middle" fill="#E2E8F0" font-size="8">Save Failed Submission</text>
+
+        <text x="405" y="328" text-anchor="middle" fill="#34D399" font-size="7" font-weight="700">✓ PASS</text>
+        <rect x="370" y="330" width="160" height="22" rx="6" fill="#059669"/>
+        <text x="450" y="345" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">✅ Accepted</text>
+        <rect x="365" y="362" width="170" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="450" y="376" text-anchor="middle" fill="#E2E8F0" font-size="8">Save + Update Progress</text>
+        <rect x="370" y="392" width="160" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="450" y="406" text-anchor="middle" fill="#E2E8F0" font-size="8">Update Streak & Board</text>
+
+        <rect x="195" y="420" width="210" height="22" rx="11" fill="#3B82F6"/>
+        <text x="300" y="435" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Return Results to Frontend</text>
+      </svg>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ===== 7. API REQUEST LIFECYCLE ===== -->
-  <section class="section" id="api-flow">
-    <div class="section-label">Flowchart 04</div>
-    <div class="section-title">API Request Lifecycle Flow</div>
+<!-- 5. AI INTERVIEW -->
+<section class="section" id="interview">
+  <div class="section-label">Flowchart 03</div>
+  <div class="section-title">AI Mock Interview Flow</div>
+  <div class="diagram-card">
+    <div class="card-header"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="card-title">ai_interview.diagram</span></div>
+    <div class="diagram-body">
+      <svg viewBox="0 0 600 450" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif">
+        <line x1="300" y1="28" x2="300" y2="38" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="58" x2="300" y2="68" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="88" x2="300" y2="98" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="124" x2="300" y2="134" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="156" x2="300" y2="166" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="186" x2="300" y2="196" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="222" x2="300" y2="232" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="258" x2="300" y2="272" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="312" x2="155" y2="332" stroke="#34D399" stroke-width="1.2"/>
+        <line x1="300" y1="312" x2="460" y2="332" stroke="#EF4444" stroke-width="1"/>
+        <!-- Loop back -->
+        <path d="M155 354 L155 370 Q155 378 147 378 L65 378 Q57 378 57 370 L57 118 Q57 110 65 110 L195 110" fill="none" stroke="#34D399" stroke-width="1" stroke-dasharray="3"/>
+        <polygon points="195,107 189,110 195,113" fill="#34D399"/>
+        <line x1="460" y1="354" x2="460" y2="364" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="460" y1="390" x2="460" y2="400" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="460" y1="422" x2="460" y2="432" stroke="#2A3A50" stroke-width="1.5"/>
 
-    <div class="diagram-card">
-      <div class="card-header">
-        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-        <span class="card-title">api_lifecycle.diagram</span>
-      </div>
-      <div class="diagram-body">
-        <div class="flow-container">
-          <div class="flow-node start">📱 Client sends HTTP Request</div>
-          <div class="arrow-down"></div>
+        <rect x="185" y="8" width="230" height="20" rx="10" fill="#3B82F6"/>
+        <text x="300" y="22" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">🎤 Start Mock Interview</text>
 
-          <div class="flow-node external">Express.js receives request</div>
-          <div class="arrow-down"></div>
+        <rect x="195" y="38" width="210" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="52" text-anchor="middle" fill="#E2E8F0" font-size="9">Select: Technical / HR / Behavioral</text>
 
-          <div class="flow-node process">CORS Middleware<br><small style="color:var(--text2);">Check allowed origins</small></div>
-          <div class="arrow-down"></div>
+        <rect x="210" y="68" width="180" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="82" text-anchor="middle" fill="#E2E8F0" font-size="9">POST /api/interview/start</text>
 
-          <div class="flow-node process">Rate Limiter<br><small style="color:var(--text2);">express-rate-limit (100 req/15min)</small></div>
-          <div class="arrow-down"></div>
+        <rect x="190" y="98" width="220" height="26" rx="8" fill="#7C3AED"/>
+        <text x="300" y="112" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">🧠 Gemini: Generate Question</text>
+        <text x="300" y="121" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7">Prompt + scoring rubric</text>
 
-          <div class="flow-node process">Body Parser<br><small style="color:var(--text2);">JSON + URL-encoded</small></div>
-          <div class="arrow-down"></div>
+        <rect x="215" y="134" width="170" height="22" rx="6" fill="#059669"/>
+        <text x="300" y="149" text-anchor="middle" fill="#fff" font-size="9">Display Question</text>
 
-          <div class="flow-node decision">Protected<br>Route?</div>
-          <div class="arrow-down"></div>
+        <rect x="215" y="166" width="170" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="180" text-anchor="middle" fill="#E2E8F0" font-size="9">User Types Answer</text>
 
-          <div class="branch-container">
-            <div class="branch">
-              <div class="branch-label">PUBLIC</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node process">Skip Auth →</div>
-            </div>
-            <div class="branch">
-              <div class="branch-label fail">PROTECTED</div>
-              <div class="arrow-down"></div>
-              <div class="flow-node ai">JWT Auth Middleware<br><small>Verify Bearer Token</small></div>
-              <div class="arrow-down"></div>
-              <div class="flow-node decision">Token<br>Valid?</div>
-              <div class="arrow-down"></div>
-              <div class="branch-container">
-                <div class="branch">
-                  <div class="branch-label fail">✗ INVALID</div>
-                  <div class="arrow-down"></div>
-                  <div class="flow-node error">401 Unauthorized</div>
-                </div>
-                <div class="branch">
-                  <div class="branch-label">✓ VALID</div>
-                  <div class="arrow-down"></div>
-                  <div class="flow-node process">Attach user to req.user</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <rect x="190" y="196" width="220" height="26" rx="8" fill="#7C3AED"/>
+        <text x="300" y="210" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">🧠 Gemini: Evaluate Answer</text>
+        <text x="300" y="219" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="7">5 dimensions (0-100)</text>
 
-          <div style="margin-top:32px;"></div>
-          <div class="flow-node process">Input Validation<br><small style="color:var(--text2);">express-validator / Joi</small></div>
-          <div class="arrow-down"></div>
+        <rect x="200" y="232" width="200" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="246" text-anchor="middle" fill="#E2E8F0" font-size="9">Return Feedback + Score</text>
 
-          <div class="flow-node process">Route Handler → Controller</div>
-          <div class="arrow-down"></div>
+        <polygon points="300,272 360,294 300,316 240,294" fill="#F59E0B"/>
+        <text x="300" y="292" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">More Qs?</text>
 
-          <div class="flow-node process">Service Layer (Business Logic)</div>
-          <div class="arrow-down"></div>
+        <text x="195" y="330" text-anchor="middle" fill="#34D399" font-size="7" font-weight="700">↩ YES</text>
+        <rect x="80" y="332" width="150" height="22" rx="6" fill="#7C3AED"/>
+        <text x="155" y="347" text-anchor="middle" fill="#fff" font-size="9">Next Question ↩</text>
 
-          <div class="flow-node db">MongoDB Query via Mongoose</div>
-          <div class="arrow-down"></div>
+        <text x="420" y="330" text-anchor="middle" fill="#EF4444" font-size="7" font-weight="700">NO — END</text>
+        <rect x="385" y="332" width="150" height="22" rx="6" fill="#7C3AED"/>
+        <text x="460" y="347" text-anchor="middle" fill="#fff" font-size="9">🧠 Generate Summary</text>
 
-          <div class="flow-node success">✅ Send JSON Response<br><small>{ success, message, data }</small></div>
-          <div class="arrow-down"></div>
+        <rect x="380" y="364" width="160" height="26" rx="8" fill="#059669"/>
+        <text x="460" y="381" text-anchor="middle" fill="#fff" font-size="9">Save Session to DB</text>
 
-          <div class="flow-node process">Error Handler Middleware<br><small style="color:var(--text2);">Catches any thrown errors → formatted response</small></div>
-        </div>
-      </div>
+        <rect x="375" y="400" width="170" height="22" rx="11" fill="#3B82F6"/>
+        <text x="460" y="415" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">✅ Show Score Card</text>
+      </svg>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ===== 8. DEPLOYMENT ARCHITECTURE ===== -->
-  <section class="section" id="deploy">
-    <div class="section-label">Diagram 04</div>
-    <div class="section-title">Deployment Architecture</div>
-
-    <div class="arch-grid">
-      <div class="arch-layer" data-layer="Developer Workflow">
-        <div class="arch-boxes">
-          <div class="arch-box blue">VS Code / Claude Code</div>
-          <div class="arch-box blue">Git Commit & Push</div>
-          <div class="arch-box blue">GitHub Repository</div>
-        </div>
-      </div>
-
-      <div class="layer-arrow">▼ ▼ ▼</div>
-      <div style="text-align:center;font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace;margin:-8px 0 4px;">GitHub Webhook Triggers</div>
-
-      <div class="arch-layer" data-layer="CI/CD — Render Platform">
-        <div class="arch-boxes">
-          <div class="arch-box green">Auto Build on Push</div>
-          <div class="arch-box green">Environment Variables</div>
-          <div class="arch-box green">Health Checks</div>
-          <div class="arch-box green">SSL/TLS Certs</div>
-        </div>
-      </div>
-
-      <div class="layer-arrow">▼ ▼ ▼</div>
-
-      <div class="arch-layer" data-layer="Production Services">
-        <div class="arch-boxes">
-          <div class="arch-box purple">Frontend<br><small>Render Static Site</small></div>
-          <div class="arch-box purple">Backend API<br><small>Render Web Service</small></div>
-        </div>
-      </div>
-
-      <div class="layer-arrow">▼ ▼ ▼</div>
-
-      <div class="arch-layer" data-layer="External Services & Data">
-        <div class="arch-boxes">
-          <div class="arch-box teal">MongoDB Atlas<br><small>M0 Free Tier / Replica Set</small></div>
-          <div class="arch-box cyan">Judge0 CE<br><small>Code Execution API</small></div>
-          <div class="arch-box pink">Google Gemini<br><small>AI/ML API</small></div>
-          <div class="arch-box orange">Cloudinary<br><small>Media CDN</small></div>
-        </div>
-      </div>
+<!-- 6. ER DIAGRAM -->
+<section class="section" id="er">
+  <div class="section-label">Diagram 03</div>
+  <div class="section-title">Entity Relationship Diagram</div>
+  <div class="er-grid">
+    <div class="erc" style="border-top:2px solid var(--accent)">
+      <div class="eh" style="color:var(--accent2)">👤 Users</div>
+      <div class="ef"><span>_id</span><span class="bpk">PK</span></div>
+      <div class="ef"><span>name</span><span style="color:var(--text2)">String</span></div>
+      <div class="ef"><span>email</span><span style="color:var(--cyan)">UNIQ</span></div>
+      <div class="ef"><span>password</span><span style="color:var(--text2)">Hash</span></div>
+      <div class="ef"><span>role</span><span style="color:var(--text2)">Enum</span></div>
     </div>
-  </section>
+    <div class="erc" style="border-top:2px solid var(--green)">
+      <div class="eh" style="color:var(--green)">💡 Problems</div>
+      <div class="ef"><span>_id</span><span class="bpk">PK</span></div>
+      <div class="ef"><span>title</span><span style="color:var(--text2)">String</span></div>
+      <div class="ef"><span>slug</span><span style="color:var(--cyan)">UNIQ</span></div>
+      <div class="ef"><span>difficulty</span><span style="color:var(--text2)">Enum</span></div>
+      <div class="ef"><span>testCases</span><span style="color:var(--text2)">[Obj]</span></div>
+    </div>
+    <div class="erc" style="border-top:2px solid var(--purple)">
+      <div class="eh" style="color:var(--purple)">📤 Submissions</div>
+      <div class="ef"><span>_id</span><span class="bpk">PK</span></div>
+      <div class="ef"><span>userId</span><span class="bfk">FK→Users</span></div>
+      <div class="ef"><span>problemId</span><span class="bfk">FK→Prob</span></div>
+      <div class="ef"><span>status</span><span style="color:var(--text2)">Enum</span></div>
+      <div class="ef"><span>runtime</span><span style="color:var(--text2)">Num</span></div>
+    </div>
+    <div class="erc" style="border-top:2px solid var(--pink)">
+      <div class="eh" style="color:var(--pink)">🎙️ Interviews</div>
+      <div class="ef"><span>_id</span><span class="bpk">PK</span></div>
+      <div class="ef"><span>userId</span><span class="bfk">FK→Users</span></div>
+      <div class="ef"><span>type</span><span style="color:var(--text2)">Enum</span></div>
+      <div class="ef"><span>questions</span><span style="color:var(--text2)">[Obj]</span></div>
+      <div class="ef"><span>score</span><span style="color:var(--text2)">Num</span></div>
+    </div>
+    <div class="erc" style="border-top:2px solid var(--orange)">
+      <div class="eh" style="color:var(--orange)">🧮 AptitudeTests</div>
+      <div class="ef"><span>_id</span><span class="bpk">PK</span></div>
+      <div class="ef"><span>title</span><span style="color:var(--text2)">String</span></div>
+      <div class="ef"><span>category</span><span style="color:var(--text2)">Enum</span></div>
+      <div class="ef"><span>questions</span><span style="color:var(--text2)">[Obj]</span></div>
+    </div>
+    <div class="erc" style="border-top:2px solid var(--cyan)">
+      <div class="eh" style="color:var(--cyan)">📊 Results</div>
+      <div class="ef"><span>_id</span><span class="bpk">PK</span></div>
+      <div class="ef"><span>userId</span><span class="bfk">FK→Users</span></div>
+      <div class="ef"><span>testId</span><span class="bfk">FK→Tests</span></div>
+      <div class="ef"><span>score</span><span style="color:var(--text2)">Num</span></div>
+    </div>
+  </div>
+  <div class="rels">
+    <h4>// Relationships</h4>
+    <div class="rel"><span class="re" style="background:rgba(59,130,246,0.15);color:var(--accent2)">Users</span><span class="rl">1</span><div class="rline"></div><span class="rl">N</span><span class="re" style="background:rgba(167,139,250,0.15);color:var(--purple)">Submissions</span></div>
+    <div class="rel"><span class="re" style="background:rgba(52,211,153,0.15);color:var(--green)">Problems</span><span class="rl">1</span><div class="rline"></div><span class="rl">N</span><span class="re" style="background:rgba(167,139,250,0.15);color:var(--purple)">Submissions</span></div>
+    <div class="rel"><span class="re" style="background:rgba(59,130,246,0.15);color:var(--accent2)">Users</span><span class="rl">1</span><div class="rline"></div><span class="rl">N</span><span class="re" style="background:rgba(244,114,182,0.15);color:var(--pink)">Interviews</span></div>
+    <div class="rel"><span class="re" style="background:rgba(59,130,246,0.15);color:var(--accent2)">Users</span><span class="rl">1</span><div class="rline"></div><span class="rl">N</span><span class="re" style="background:rgba(34,211,238,0.15);color:var(--cyan)">Results</span></div>
+    <div class="rel"><span class="re" style="background:rgba(245,158,11,0.15);color:var(--orange)">Tests</span><span class="rl">1</span><div class="rline"></div><span class="rl">N</span><span class="re" style="background:rgba(34,211,238,0.15);color:var(--cyan)">Results</span></div>
+  </div>
+</section>
+
+<!-- 7. API LIFECYCLE -->
+<section class="section" id="api">
+  <div class="section-label">Flowchart 04</div>
+  <div class="section-title">API Request Lifecycle</div>
+  <div class="diagram-card">
+    <div class="card-header"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="card-title">api_lifecycle.diagram</span></div>
+    <div class="diagram-body">
+      <svg viewBox="0 0 600 380" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DM Sans,sans-serif">
+        <line x1="300" y1="28" x2="300" y2="38" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="58" x2="300" y2="68" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="88" x2="300" y2="102" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="142" x2="160" y2="162" stroke="#34D399" stroke-width="1.2"/>
+        <line x1="300" y1="142" x2="450" y2="162" stroke="#EF4444" stroke-width="1"/>
+        <line x1="450" y1="182" x2="450" y2="195" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="450" y1="235" x2="400" y2="250" stroke="#EF4444" stroke-width="1" stroke-dasharray="3"/>
+        <line x1="450" y1="235" x2="300" y2="265" stroke="#34D399" stroke-width="1"/>
+        <line x1="160" y1="182" x2="300" y2="265" stroke="#2A3A50" stroke-width="1"/>
+        <line x1="300" y1="285" x2="300" y2="295" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="315" x2="300" y2="325" stroke="#2A3A50" stroke-width="1.5"/>
+        <line x1="300" y1="347" x2="300" y2="357" stroke="#2A3A50" stroke-width="1.5"/>
+
+        <rect x="210" y="8" width="180" height="20" rx="10" fill="#3B82F6"/>
+        <text x="300" y="22" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">📱 Client HTTP Request</text>
+
+        <rect x="215" y="38" width="170" height="20" rx="6" fill="#0891B2"/>
+        <text x="300" y="52" text-anchor="middle" fill="#fff" font-size="9">Express Receives</text>
+
+        <rect x="190" y="68" width="220" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="82" text-anchor="middle" fill="#E2E8F0" font-size="9">CORS → Rate Limit → Body Parser</text>
+
+        <polygon points="300,102 360,124 300,146 240,124" fill="#F59E0B"/>
+        <text x="300" y="127" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">Protected?</text>
+
+        <text x="195" y="160" text-anchor="middle" fill="#34D399" font-size="7" font-weight="700">PUBLIC</text>
+        <rect x="90" y="162" width="140" height="20" rx="6" fill="#059669"/>
+        <text x="160" y="176" text-anchor="middle" fill="#fff" font-size="9">Skip Auth →</text>
+
+        <text x="415" y="160" text-anchor="middle" fill="#EF4444" font-size="7" font-weight="700">PROTECTED</text>
+        <rect x="375" y="162" width="150" height="20" rx="6" fill="#7C3AED"/>
+        <text x="450" y="176" text-anchor="middle" fill="#fff" font-size="9">JWT Verify</text>
+
+        <polygon points="450,195 500,217 450,239 400,217" fill="#F59E0B"/>
+        <text x="450" y="220" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">Valid?</text>
+
+        <rect x="330" y="242" width="110" height="18" rx="6" fill="#DC2626"/>
+        <text x="385" y="255" text-anchor="middle" fill="#fff" font-size="8">401 Unauth</text>
+
+        <rect x="200" y="265" width="200" height="20" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="279" text-anchor="middle" fill="#E2E8F0" font-size="9">Validation → Controller → Service</text>
+
+        <rect x="215" y="295" width="170" height="20" rx="8" fill="#059669"/>
+        <text x="300" y="309" text-anchor="middle" fill="#fff" font-size="9">MongoDB Query</text>
+
+        <rect x="200" y="325" width="200" height="22" rx="6" fill="#1F2B3D" stroke="#2A3A50"/>
+        <text x="300" y="340" text-anchor="middle" fill="#E2E8F0" font-size="9">Error Handler (catches all)</text>
+
+        <rect x="195" y="357" width="210" height="20" rx="10" fill="#3B82F6"/>
+        <text x="300" y="371" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">✅ JSON { success, data }</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 8. DEPLOYMENT -->
+<section class="section" id="deploy">
+  <div class="section-label">Diagram 04</div>
+  <div class="section-title">Deployment Architecture</div>
+  <div class="layer">
+    <div class="layer-label">Developer</div>
+    <div class="chips"><div class="chip bl">VS Code / Claude Code</div><div class="chip bl">Git Push</div><div class="chip bl">GitHub</div></div>
+  </div>
+  <div class="arrow-sep">▼▼▼</div>
+  <div class="arrow-lbl">Webhook</div>
+  <div class="layer">
+    <div class="layer-label">CI/CD — Render</div>
+    <div class="chips"><div class="chip gr">Auto Build</div><div class="chip gr">Env Vars</div><div class="chip gr">Health Checks</div><div class="chip gr">SSL</div></div>
+  </div>
+  <div class="arrow-sep">▼▼▼</div>
+  <div class="layer">
+    <div class="layer-label">Production</div>
+    <div class="chips"><div class="chip pr">Frontend — Static Site</div><div class="chip pr">Backend — Web Service</div></div>
+  </div>
+  <div class="arrow-sep">▼▼▼</div>
+  <div class="layer">
+    <div class="layer-label">External Services</div>
+    <div class="chips"><div class="chip tl">MongoDB Atlas</div><div class="chip cy">Judge0 CE</div><div class="chip pk">Gemini AI</div><div class="chip or">Cloudinary</div></div>
+  </div>
+</section>
 
 </div>
 
-<footer>
-  PlacePrep — Technical Architecture Diagrams &bull; Built by Amit &bull; MERN Stack &bull; 2026
-</footer>
-
+<footer>PlacePrep — Technical Diagrams • Amit • 2026</footer>
 </body>
 </html>
