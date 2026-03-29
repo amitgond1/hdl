@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlacePrep — Architecture Diagrams & Flowcharts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0B1120;
+    --bg2: #111827;
+    --surface: #1A2332;
+    --surface2: #1F2B3D;
+    --border: #2A3A50;
+    --text: #E2E8F0;
+    --text2: #94A3B8;
+    --accent: #3B82F6;
+    --accent2: #60A5FA;
+    --green: #34D399;
+    --orange: #F59E0B;
+    --pink: #F472B6;
+    --purple: #A78BFA;
+    --red: #EF4444;
+    --cyan: #22D3EE;
+    --teal: #14B8A6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .page-bg {
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(59,130,246,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(167,139,250,0.06) 0%, transparent 60%),
+      var(--bg);
+  }
+
+  header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    color: var(--accent2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(59,130,246,0.25);
+    margin-bottom: 16px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 0%, var(--accent2) 60%, var(--purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+  }
+  header p { color: var(--text2); font-size: 16px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(11,17,32,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 6px;
+    padding: 12px 20px;
+    overflow-x: auto;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  nav a {
+    color: var(--text2); text-decoration: none;
+    font-size: 13px; font-weight: 500;
+    padding: 8px 16px; border-radius: 8px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  nav a:hover, nav a.active {
+    color: var(--accent2);
+    background: rgba(59,130,246,0.1);
+    border-color: rgba(59,130,246,0.2);
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+
+  .section {
+    margin-bottom: 60px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #fff;
+  }
+
+  /* ========= SVG DIAGRAMS ========= */
+  .diagram-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .diagram-card .card-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .card-header .dot.r { background: #EF4444; }
+  .card-header .dot.y { background: #F59E0B; }
+  .card-header .dot.g { background: #22C55E; }
+  .card-header .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--text2);
+    margin-left: 8px;
+  }
+  .diagram-body {
+    padding: 32px;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+  }
+  .diagram-body svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ========= FLOW NODES ========= */
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 20px;
+    min-width: 300px;
+  }
+
+  .flow-node {
+    position: relative;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 220px;
+    max-width: 320px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .flow-node:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .flow-node.start { background: linear-gradient(135deg, #3B82F6, #2563EB); color: #fff; border-radius: 30px; }
+  .flow-node.process { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+  .flow-node.decision { background: linear-gradient(135deg, #F59E0B, #D97706); color: #fff; transform: rotate(0deg); border-radius: 12px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); padding: 30px 40px; min-width: 180px; }
+  .flow-node.success { background: linear-gradient(135deg, #059669, #10B981); color: #fff; }
+  .flow-node.error { background: linear-gradient(135deg, #DC2626, #EF4444); color: #fff; }
+  .flow-node.ai { background: linear-gradient(135deg, #7C3AED, #A78BFA); color: #fff; }
+  .flow-node.external { background: linear-gradient(135deg, #0891B2, #22D3EE); color: #fff; }
+  .flow-node.db { background: linear-gradient(135deg, #059669, #34D399); color: #fff; border-radius: 12px 12px 30px 30px; }
+
+  .arrow-down {
+    width: 2px; height: 32px;
+    background: var(--border);
+    position: relative;
+  }
+  .arrow-down::after {
+    content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-top: 8px solid var(--border);
+  }
+  .arrow-label {
+    font-size: 11px; color: var(--text2);
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 0; text-align: center;
+  }
+
+  .branch-container {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+  }
+  .branch-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background: var(--border);
+  }
+  .branch { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .branch-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .branch-label.fail { color: var(--red); }
+
+  /* ========= ARCH DIAGRAM ========= */
+  .arch-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  .arch-layer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    position: relative;
+  }
+  .arch-layer::before {
+    content: attr(data-layer);
+    position: absolute;
+    top: -10px; left: 20px;
+    background: var(--bg);
+    padding: 2px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  .arch-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .arch-box {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .arch-box:hover { transform: scale(1.04); }
+
+  .arch-box.blue { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.3); color: var(--accent2); }
+  .arch-box.purple { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.3); color: var(--purple); }
+  .arch-box.green { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.3); color: var(--green); }
+  .arch-box.orange { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: var(--orange); }
+  .arch-box.pink { background: rgba(244,114,182,0.12); border-color: rgba(244,114,182,0.3); color: var(--pink); }
+  .arch-box.cyan { background: rgba(34,211,238,0.12); border-color: rgba(34,211,238,0.3); color: var(--cyan); }
+  .arch-box.teal { background: rgba(20,184,166,0.12); border-color: rgba(20,184,166,0.3); color: var(--teal); }
+  .arch-box.red { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); color: var(--red); }
+
+  .layer-arrow {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+    color: var(--border);
+    font-size: 22px;
+    letter-spacing: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ========= ER DIAGRAM ========= */
+  .er-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  .er-entity {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .er-entity:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
+  .er-entity .entity-header {
+    padding: 14px 18px;
+    font-weight: 700;
+    font-size: 15px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .er-entity .entity-header .icon { font-size: 18px; }
+  .er-entity .field {
+    padding: 8px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(42,58,80,0.4);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .er-entity .field:last-child { border-bottom: none; }
+  .er-entity .field .fname { color: var(--text); font-weight: 500; }
+  .er-entity .field .ftype { color: var(--text2); }
+  .er-entity .field .fkey {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .fkey.pk { background: rgba(245,158,11,0.2); color: var(--orange); }
+  .fkey.fk { background: rgba(167,139,250,0.2); color: var(--purple); }
+  .fkey.idx { background: rgba(34,211,238,0.2); color: var(--cyan); }
+
+  /* ========= MODULE DIAGRAM ========= */
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .module-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .module-card:nth-child(1)::before { background: var(--accent); }
+  .module-card:nth-child(2)::before { background: var(--green); }
+  .module-card:nth-child(3)::before { background: var(--purple); }
+  .module-card:nth-child(4)::before { background: var(--orange); }
+  .module-card:nth-child(5)::before { background: var(--pink); }
+  .module-card:nth-child(6)::before { background: var(--cyan); }
+  .module-card:nth-child(7)::before { background: var(--teal); }
+  .module-card:nth-child(8)::before { background: var(--red); }
+
+  .module-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border-color: rgba(59,130,246,0.3);
+  }
+  .module-icon { font-size: 32px; margin-bottom: 10px; }
+  .module-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .module-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  /* ========= RELATION LINES ========= */
+  .relations {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-top: 24px;
+  }
+  .relations h4 {
+    font-size: 14px;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .rel-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(42,58,80,0.3);
+  }
+  .rel-row:last-child { border-bottom: none; }
+  .rel-entity {
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .rel-line {
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 6px, transparent 6px, transparent 12px);
+    position: relative;
+  }
+  .rel-label {
+    color: var(--text2);
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+
+  /* ========= RESPONSIVE ========= */
+  @media (max-width: 768px) {
+    .branch-container { flex-direction: column; gap: 16px; }
+    .branch-container::before { display: none; }
+    nav { justify-content: flex-start; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+  .section:nth-child(5) { animation-delay: 0.4s; }
+  .section:nth-child(6) { animation-delay: 0.5s; }
+
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--text2);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<header>
+  <div class="badge">Technical Architecture</div>
+  <h1>PlacePrep — System Diagrams</h1>
+  <p>Flowcharts, Architecture Diagrams & Entity Relationships</p>
+</header>
+
+<nav>
+  <a href="#arch">System Architecture</a>
+  <a href="#modules">Module Diagram</a>
+  <a href="#auth-flow">Auth Flow</a>
+  <a href="#code-flow">Code Execution Flow</a>
+  <a href="#interview-flow">AI Interview Flow</a>
+  <a href="#er">ER Diagram</a>
+  <a href="#api-flow">API Request Flow</a>
+  <a href="#deploy">Deployment</a>
+</nav>
+
+<div class="container">
+
+  <!-- ===== 1. SYSTEM ARCHITECTURE ===== -->
+  <section class="section" id="arch">
+    <div class="section-label">Diagram 01</div>
+    <div class="section-title">System Architecture (3-Tier)</div>
+
+    <div class="arch-grid">
+      <div class="arch-layer" data-layer="Client Layer — Browser">
+        <div class="arch-boxes">
+          <div class="arch-box blue">React 18 SPA</div>
+          <div class="arch-box blue">Tailwind CSS</div>
+          <div class="arch-box blue">Monaco Editor</div>
+          <div class="arch-box blue">React Router v6</div>
+          <div class="arch-box blue">Axios Client</div>
+          <div class="arch-box blue">Context API</div>
+        </div>
+      </div>
+
+      <div class="layer-arrow">▼ ▼ ▼</div>
+      <div style="text-align:center;font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace;margin:-8px 0 4px;">HTTPS / REST API / JSON</div>
+
+      <div class="arch-layer" data-layer="Server Layer — Node.js Runtime">
+        <div class="arch-boxes">
+          <div class="arch-box purple">Express.js Router</div>
+          <div class="arch-box purple">JWT Auth Middleware</div>
+          <div class="arch-box purple">Rate Limiter</div>
+          <div class="arch-box purple">CORS Handler</div>
+        </div>
+        <div style="margin-top:12px;"></div>
+        <div class="arch-boxes">
+          <div class="arch-box green">Auth Controller</div>
+          <div class="arch-box green">Problem Controller</div>
+          <div class="arch-box green">Interview Controller</div>
+          <div class="arch-box green">Aptitude Controller</div>
+          <div class="arch-box green">Resume Controller</div>
+        </div>
+        <div style="margin-top:12px;"></div>
+        <div class="arch-boxes">
+          <div class="arch-box orange">Mongoose ODM</div>
+          <div class="arch-box orange">Validation Layer</div>
+          <div class="arch-box orange">Error Handler</div>
+        </div>
+      </div>
+
+      <div class="layer-arrow">▼ ▼ ▼</div>
+      <div style="text-align:center;font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace;margin:-8px 0 4px;">MongoDB Wire Protocol / TCP</div>
+
+      <div class="arch-layer" data-layer="Data Layer — Cloud Services">
+        <div class="arch-boxes">
+          <div class="arch-box teal">MongoDB Atlas</div>
+          <div class="arch-box cyan">Judge0 CE API</div>
+          <div class="arch-box pink">Gemini AI API</div>
+          <div class="arch-box orange">Cloudinary CDN</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. MODULE DECOMPOSITION ===== -->
+  <section class="section" id="modules">
+    <div class="section-label">Diagram 02</div>
+    <div class="section-title">Module Decomposition Diagram</div>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <div class="module-icon">🔐</div>
+        <div class="module-name">Auth Module</div>
+        <div class="module-desc">JWT Login/Register, OAuth, Role-Based Access Control, Token Refresh</div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">💻</div>
+        <div class="module-name">DSA Compiler</div>
+        <div class="module-desc">Monaco Editor, Judge0 Execution, Multi-language, Test Cases, Submissions</div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🤖</div>
+        <div class="module-name">AI Interview</div>
+        <div class="module-desc">Gemini-powered Q&A, Real-time Scoring, Feedback, Session History</div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">📝</div>
+        <div class="module-name">Aptitude Module</div>
+        <div class="module-desc">Quant, Verbal, Logical MCQs, Timed Tests, Topic Analytics</div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">📄</div>
+        <div class="module-name">Resume Builder</div>
+        <div class="module-desc">Templates, ATS Score, AI Suggestions, PDF Generation</div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">📊</div>
+        <div class="module-name">Progress Tracker</div>
+        <div class="module-desc">Heatmap, Streaks, Leaderboard, Spaced Repetition, Analytics</div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">🏢</div>
+        <div class="module-name">Company Prep</div>
+        <div class="module-desc">Company Profiles, Interview Experiences, Prep Guides, PYQs</div>
+      </div>
+      <div class="module-card">
+        <div class="module-icon">⚙️</div>
+        <div class="module-name">Admin Panel</div>
+        <div class="module-desc">User CRUD, Content CMS, Analytics Dashboard, Role Management</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. AUTH FLOW ===== -->
+  <section class="section" id="auth-flow">
+    <div class="section-label">Flowchart 01</div>
+    <div class="section-title">Authentication Flow</div>
+
+    <div class="diagram-card">
+      <div class="card-header">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="card-title">auth_flow.diagram</span>
+      </div>
+      <div class="diagram-body">
+        <div class="flow-container">
+          <div class="flow-node start">🚀 User Opens Login Page</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Enter Email & Password</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">POST /api/auth/login<br><small style="color:var(--text2);">Axios → Express Router</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Find User in MongoDB by Email</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node decision">User<br>Exists?</div>
+          <div class="arrow-down"></div>
+
+          <div class="branch-container">
+            <div class="branch">
+              <div class="branch-label fail">✗ NO</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node error">401: Invalid Credentials</div>
+            </div>
+            <div class="branch">
+              <div class="branch-label">✓ YES</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node process">bcrypt.compare(password, hash)</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node decision">Password<br>Match?</div>
+              <div class="arrow-down"></div>
+              <div class="branch-container">
+                <div class="branch">
+                  <div class="branch-label fail">✗ NO</div>
+                  <div class="arrow-down"></div>
+                  <div class="flow-node error">401: Wrong Password</div>
+                </div>
+                <div class="branch">
+                  <div class="branch-label">✓ YES</div>
+                  <div class="arrow-down"></div>
+                  <div class="flow-node ai">Generate JWT Access Token (15m)</div>
+                  <div class="arrow-down"></div>
+                  <div class="flow-node ai">Generate Refresh Token (7d)<br><small>Set as httpOnly Cookie</small></div>
+                  <div class="arrow-down"></div>
+                  <div class="flow-node db">Save Refresh Token to MongoDB</div>
+                  <div class="arrow-down"></div>
+                  <div class="flow-node success">✅ 200: Login Success<br><small>Return { token, user }</small></div>
+                  <div class="arrow-down"></div>
+                  <div class="flow-node start">Redirect to Dashboard</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. CODE EXECUTION FLOW ===== -->
+  <section class="section" id="code-flow">
+    <div class="section-label">Flowchart 02</div>
+    <div class="section-title">Code Submission & Execution Flow</div>
+
+    <div class="diagram-card">
+      <div class="card-header">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="card-title">code_execution_flow.diagram</span>
+      </div>
+      <div class="diagram-body">
+        <div class="flow-container">
+          <div class="flow-node start">👨‍💻 User Writes Code in Monaco Editor</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Select Language (C++/Java/Python/JS)</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Click "Submit" Button</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">POST /api/problems/:id/submit<br><small style="color:var(--text2);">{ code, languageId }</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node ai">Auth Middleware — Verify JWT</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node db">Fetch Test Cases from MongoDB</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node external">🔄 Send to Judge0 CE API<br><small>{ source_code, stdin, expected_output, language_id }</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Judge0 Executes in Docker Sandbox<br><small style="color:var(--text2);">CPU: 2s limit | Memory: 256MB limit</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Poll Judge0 for Results<br><small style="color:var(--text2);">Interval: 1s | Max wait: 10s</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node decision">All Tests<br>Pass?</div>
+          <div class="arrow-down"></div>
+
+          <div class="branch-container">
+            <div class="branch">
+              <div class="branch-label fail">✗ FAIL</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node error">Status: WA / TLE / RE / CE</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node db">Save Submission (Failed)</div>
+            </div>
+            <div class="branch">
+              <div class="branch-label">✓ PASS</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node success">✅ Status: Accepted</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node db">Save Submission + Update Progress</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node process">Update Streak & Leaderboard</div>
+            </div>
+          </div>
+
+          <div style="margin-top:32px;"></div>
+          <div class="flow-node start">Return Results to Frontend<br><small>{ status, runtime, memory, testCasesPassed }</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. AI INTERVIEW FLOW ===== -->
+  <section class="section" id="interview-flow">
+    <div class="section-label">Flowchart 03</div>
+    <div class="section-title">AI Mock Interview Flow</div>
+
+    <div class="diagram-card">
+      <div class="card-header">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="card-title">ai_interview_flow.diagram</span>
+      </div>
+      <div class="diagram-body">
+        <div class="flow-container">
+          <div class="flow-node start">🎤 User Starts Mock Interview</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Select Type: Technical / HR / Behavioral</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Select Difficulty: Easy / Medium / Hard</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">POST /api/interview/start<br><small style="color:var(--text2);">{ type, difficulty }</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node db">Create InterviewSession in MongoDB</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node ai">🧠 Gemini API: Generate Question<br><small>Structured prompt with context & rubric</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node success">Display Question to User</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">User Types / Speaks Answer</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">POST /api/interview/:sessionId/answer<br><small style="color:var(--text2);">{ answer }</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node ai">🧠 Gemini API: Evaluate Answer<br><small>Score on 5 dimensions (0-100 total)</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Return Feedback + Score to User</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node decision">More<br>Questions?</div>
+          <div class="arrow-down"></div>
+
+          <div class="branch-container">
+            <div class="branch">
+              <div class="branch-label">↩ YES — Loop Back</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node ai">Generate Next Question</div>
+            </div>
+            <div class="branch">
+              <div class="branch-label fail">✗ NO — Session End</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node ai">🧠 Generate Overall Summary</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node db">Save Complete Session to DB</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node success">✅ Show Final Score Card<br><small>Score + Strengths + Improvements</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. ER DIAGRAM ===== -->
+  <section class="section" id="er">
+    <div class="section-label">Diagram 03</div>
+    <div class="section-title">Entity Relationship Diagram</div>
+
+    <div class="er-grid">
+      <!-- Users -->
+      <div class="er-entity" style="border-top: 3px solid var(--accent);">
+        <div class="entity-header" style="color:var(--accent2);"><span class="icon">👤</span> Users</div>
+        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
+        <div class="field"><span class="fname">name</span><span class="ftype">String</span></div>
+        <div class="field"><span class="fname">email</span><span class="fkey idx">UNIQUE</span></div>
+        <div class="field"><span class="fname">password</span><span class="ftype">String (hashed)</span></div>
+        <div class="field"><span class="fname">role</span><span class="ftype">Enum</span></div>
+        <div class="field"><span class="fname">college</span><span class="ftype">String</span></div>
+        <div class="field"><span class="fname">dsaProgress</span><span class="ftype">Object</span></div>
+        <div class="field"><span class="fname">aptitudeProgress</span><span class="ftype">Object</span></div>
+        <div class="field"><span class="fname">refreshToken</span><span class="ftype">String</span></div>
+      </div>
+
+      <!-- Problems -->
+      <div class="er-entity" style="border-top: 3px solid var(--green);">
+        <div class="entity-header" style="color:var(--green);"><span class="icon">💡</span> Problems</div>
+        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
+        <div class="field"><span class="fname">title</span><span class="ftype">String</span></div>
+        <div class="field"><span class="fname">slug</span><span class="fkey idx">UNIQUE</span></div>
+        <div class="field"><span class="fname">difficulty</span><span class="ftype">Enum</span></div>
+        <div class="field"><span class="fname">category</span><span class="ftype">String</span></div>
+        <div class="field"><span class="fname">testCases</span><span class="ftype">[Object]</span></div>
+        <div class="field"><span class="fname">starterCode</span><span class="ftype">Object</span></div>
+        <div class="field"><span class="fname">companies</span><span class="ftype">[String]</span></div>
+      </div>
+
+      <!-- Submissions -->
+      <div class="er-entity" style="border-top: 3px solid var(--purple);">
+        <div class="entity-header" style="color:var(--purple);"><span class="icon">📤</span> Submissions</div>
+        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
+        <div class="field"><span class="fname">userId</span><span class="fkey fk">FK → Users</span></div>
+        <div class="field"><span class="fname">problemId</span><span class="fkey fk">FK → Problems</span></div>
+        <div class="field"><span class="fname">code</span><span class="ftype">String</span></div>
+        <div class="field"><span class="fname">language</span><span class="ftype">String</span></div>
+        <div class="field"><span class="fname">status</span><span class="ftype">Enum</span></div>
+        <div class="field"><span class="fname">runtime</span><span class="ftype">Number (ms)</span></div>
+        <div class="field"><span class="fname">memory</span><span class="ftype">Number (KB)</span></div>
+      </div>
+
+      <!-- InterviewSessions -->
+      <div class="er-entity" style="border-top: 3px solid var(--pink);">
+        <div class="entity-header" style="color:var(--pink);"><span class="icon">🎙️</span> InterviewSessions</div>
+        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
+        <div class="field"><span class="fname">userId</span><span class="fkey fk">FK → Users</span></div>
+        <div class="field"><span class="fname">type</span><span class="ftype">Enum</span></div>
+        <div class="field"><span class="fname">difficulty</span><span class="ftype">Enum</span></div>
+        <div class="field"><span class="fname">questions</span><span class="ftype">[Object]</span></div>
+        <div class="field"><span class="fname">overallScore</span><span class="ftype">Number</span></div>
+        <div class="field"><span class="fname">aiSummary</span><span class="ftype">String</span></div>
+      </div>
+
+      <!-- AptitudeTests -->
+      <div class="er-entity" style="border-top: 3px solid var(--orange);">
+        <div class="entity-header" style="color:var(--orange);"><span class="icon">🧮</span> AptitudeTests</div>
+        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
+        <div class="field"><span class="fname">title</span><span class="ftype">String</span></div>
+        <div class="field"><span class="fname">category</span><span class="ftype">Enum</span></div>
+        <div class="field"><span class="fname">questions</span><span class="ftype">[Object]</span></div>
+        <div class="field"><span class="fname">duration</span><span class="ftype">Number (min)</span></div>
+        <div class="field"><span class="fname">totalMarks</span><span class="ftype">Number</span></div>
+      </div>
+
+      <!-- AptitudeResults -->
+      <div class="er-entity" style="border-top: 3px solid var(--cyan);">
+        <div class="entity-header" style="color:var(--cyan);"><span class="icon">📊</span> AptitudeResults</div>
+        <div class="field"><span class="fname">_id</span><span class="fkey pk">PK</span></div>
+        <div class="field"><span class="fname">userId</span><span class="fkey fk">FK → Users</span></div>
+        <div class="field"><span class="fname">testId</span><span class="fkey fk">FK → AptitudeTests</span></div>
+        <div class="field"><span class="fname">score</span><span class="ftype">Number</span></div>
+        <div class="field"><span class="fname">answers</span><span class="ftype">[Object]</span></div>
+        <div class="field"><span class="fname">timeTaken</span><span class="ftype">Number (sec)</span></div>
+      </div>
+    </div>
+
+    <!-- Relationships -->
+    <div class="relations">
+      <h4>// Relationships</h4>
+      <div class="rel-row">
+        <span class="rel-entity" style="background:rgba(59,130,246,0.15);color:var(--accent2);">Users</span>
+        <span class="rel-label">1</span>
+        <div class="rel-line"></div>
+        <span class="rel-label">N</span>
+        <span class="rel-entity" style="background:rgba(167,139,250,0.15);color:var(--purple);">Submissions</span>
+        <span class="rel-label" style="margin-left:8px;">A user has many submissions</span>
+      </div>
+      <div class="rel-row">
+        <span class="rel-entity" style="background:rgba(52,211,153,0.15);color:var(--green);">Problems</span>
+        <span class="rel-label">1</span>
+        <div class="rel-line"></div>
+        <span class="rel-label">N</span>
+        <span class="rel-entity" style="background:rgba(167,139,250,0.15);color:var(--purple);">Submissions</span>
+        <span class="rel-label" style="margin-left:8px;">A problem has many submissions</span>
+      </div>
+      <div class="rel-row">
+        <span class="rel-entity" style="background:rgba(59,130,246,0.15);color:var(--accent2);">Users</span>
+        <span class="rel-label">1</span>
+        <div class="rel-line"></div>
+        <span class="rel-label">N</span>
+        <span class="rel-entity" style="background:rgba(244,114,182,0.15);color:var(--pink);">InterviewSessions</span>
+        <span class="rel-label" style="margin-left:8px;">A user has many interview sessions</span>
+      </div>
+      <div class="rel-row">
+        <span class="rel-entity" style="background:rgba(59,130,246,0.15);color:var(--accent2);">Users</span>
+        <span class="rel-label">1</span>
+        <div class="rel-line"></div>
+        <span class="rel-label">N</span>
+        <span class="rel-entity" style="background:rgba(34,211,238,0.15);color:var(--cyan);">AptitudeResults</span>
+        <span class="rel-label" style="margin-left:8px;">A user has many test results</span>
+      </div>
+      <div class="rel-row">
+        <span class="rel-entity" style="background:rgba(245,158,11,0.15);color:var(--orange);">AptitudeTests</span>
+        <span class="rel-label">1</span>
+        <div class="rel-line"></div>
+        <span class="rel-label">N</span>
+        <span class="rel-entity" style="background:rgba(34,211,238,0.15);color:var(--cyan);">AptitudeResults</span>
+        <span class="rel-label" style="margin-left:8px;">A test has many results</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. API REQUEST LIFECYCLE ===== -->
+  <section class="section" id="api-flow">
+    <div class="section-label">Flowchart 04</div>
+    <div class="section-title">API Request Lifecycle Flow</div>
+
+    <div class="diagram-card">
+      <div class="card-header">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="card-title">api_lifecycle.diagram</span>
+      </div>
+      <div class="diagram-body">
+        <div class="flow-container">
+          <div class="flow-node start">📱 Client sends HTTP Request</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node external">Express.js receives request</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">CORS Middleware<br><small style="color:var(--text2);">Check allowed origins</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Rate Limiter<br><small style="color:var(--text2);">express-rate-limit (100 req/15min)</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Body Parser<br><small style="color:var(--text2);">JSON + URL-encoded</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node decision">Protected<br>Route?</div>
+          <div class="arrow-down"></div>
+
+          <div class="branch-container">
+            <div class="branch">
+              <div class="branch-label">PUBLIC</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node process">Skip Auth →</div>
+            </div>
+            <div class="branch">
+              <div class="branch-label fail">PROTECTED</div>
+              <div class="arrow-down"></div>
+              <div class="flow-node ai">JWT Auth Middleware<br><small>Verify Bearer Token</small></div>
+              <div class="arrow-down"></div>
+              <div class="flow-node decision">Token<br>Valid?</div>
+              <div class="arrow-down"></div>
+              <div class="branch-container">
+                <div class="branch">
+                  <div class="branch-label fail">✗ INVALID</div>
+                  <div class="arrow-down"></div>
+                  <div class="flow-node error">401 Unauthorized</div>
+                </div>
+                <div class="branch">
+                  <div class="branch-label">✓ VALID</div>
+                  <div class="arrow-down"></div>
+                  <div class="flow-node process">Attach user to req.user</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:32px;"></div>
+          <div class="flow-node process">Input Validation<br><small style="color:var(--text2);">express-validator / Joi</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Route Handler → Controller</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Service Layer (Business Logic)</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node db">MongoDB Query via Mongoose</div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node success">✅ Send JSON Response<br><small>{ success, message, data }</small></div>
+          <div class="arrow-down"></div>
+
+          <div class="flow-node process">Error Handler Middleware<br><small style="color:var(--text2);">Catches any thrown errors → formatted response</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. DEPLOYMENT ARCHITECTURE ===== -->
+  <section class="section" id="deploy">
+    <div class="section-label">Diagram 04</div>
+    <div class="section-title">Deployment Architecture</div>
+
+    <div class="arch-grid">
+      <div class="arch-layer" data-layer="Developer Workflow">
+        <div class="arch-boxes">
+          <div class="arch-box blue">VS Code / Claude Code</div>
+          <div class="arch-box blue">Git Commit & Push</div>
+          <div class="arch-box blue">GitHub Repository</div>
+        </div>
+      </div>
+
+      <div class="layer-arrow">▼ ▼ ▼</div>
+      <div style="text-align:center;font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace;margin:-8px 0 4px;">GitHub Webhook Triggers</div>
+
+      <div class="arch-layer" data-layer="CI/CD — Render Platform">
+        <div class="arch-boxes">
+          <div class="arch-box green">Auto Build on Push</div>
+          <div class="arch-box green">Environment Variables</div>
+          <div class="arch-box green">Health Checks</div>
+          <div class="arch-box green">SSL/TLS Certs</div>
+        </div>
+      </div>
+
+      <div class="layer-arrow">▼ ▼ ▼</div>
+
+      <div class="arch-layer" data-layer="Production Services">
+        <div class="arch-boxes">
+          <div class="arch-box purple">Frontend<br><small>Render Static Site</small></div>
+          <div class="arch-box purple">Backend API<br><small>Render Web Service</small></div>
+        </div>
+      </div>
+
+      <div class="layer-arrow">▼ ▼ ▼</div>
+
+      <div class="arch-layer" data-layer="External Services & Data">
+        <div class="arch-boxes">
+          <div class="arch-box teal">MongoDB Atlas<br><small>M0 Free Tier / Replica Set</small></div>
+          <div class="arch-box cyan">Judge0 CE<br><small>Code Execution API</small></div>
+          <div class="arch-box pink">Google Gemini<br><small>AI/ML API</small></div>
+          <div class="arch-box orange">Cloudinary<br><small>Media CDN</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  PlacePrep — Technical Architecture Diagrams &bull; Built by Amit &bull; MERN Stack &bull; 2026
+</footer>
+
+</body>
+</html>
